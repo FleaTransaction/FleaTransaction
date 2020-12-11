@@ -3,8 +3,7 @@ package cn.fleatransaction.controller;
 
 
 
-import cn.fleatransaction.entity.User;
-import cn.fleatransaction.service.IUserService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
