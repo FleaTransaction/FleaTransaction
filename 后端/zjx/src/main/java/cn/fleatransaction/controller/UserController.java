@@ -50,10 +50,6 @@ public class UserController {
     public boolean save(User user){
         return userService.saveOrUpdate(user);
     }
-
-    //@ApiOperation(value = "注册用户")
-    //@PostMapping("/register/byphone")
-
-
+    
 
 }
