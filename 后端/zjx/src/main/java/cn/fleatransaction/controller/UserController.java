@@ -50,9 +50,9 @@ public class UserController {
         return userService.saveOrUpdate(user);
     }
 
-    @ApiOperation(value = "注册用户")
-    @PostMapping("/register/byphone")
-    public 
+    //@ApiOperation(value = "注册用户")
+    //@PostMapping("/register/byphone")
+    //public
 
 
 }
