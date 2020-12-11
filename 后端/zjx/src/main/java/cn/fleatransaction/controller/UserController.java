@@ -3,6 +3,7 @@ package cn.fleatransaction.controller;
 
 
 
+
 import cn.fleatransaction.entity.User;
 import cn.fleatransaction.service.IUserService;
 import io.swagger.annotations.Api;
@@ -50,9 +51,9 @@ public class UserController {
         return userService.saveOrUpdate(user);
     }
 
-    @ApiOperation(value = "注册用户")
-    @PostMapping("/register/byphone")
-    public 
+    //@ApiOperation(value = "注册用户")
+    //@PostMapping("/register/byphone")
+
 
 
 }
