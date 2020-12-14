@@ -4,15 +4,15 @@ package cn.fleatransaction.controller;
 
 
 
+import cn.fleatransaction.common.lang.Result;
 import cn.fleatransaction.entity.User;
 import cn.fleatransaction.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +23,7 @@ public class UserController {
 
     @Autowired
     IUserService userService;
+
 
     @ApiOperation(value = "查询用户")
     @GetMapping("/query")
@@ -47,8 +48,9 @@ public class UserController {
 
     @ApiOperation(value = "保存用户信息")
     @PostMapping("/save")
-    public boolean save(User user){
-        return userService.saveOrUpdate(user);
+    public Result save(@Validated @RequestBody User user){
+
+        return Result.succ(user);
     }
     
 
