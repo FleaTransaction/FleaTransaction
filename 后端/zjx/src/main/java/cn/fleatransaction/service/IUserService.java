@@ -1,7 +1,6 @@
 package cn.fleatransaction.service;
 
 
-import cn.fleatransaction.entity.Student;
 import cn.fleatransaction.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 

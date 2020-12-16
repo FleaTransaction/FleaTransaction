@@ -2,7 +2,6 @@ package cn.fleatransaction.mapper;
 
 
 
-import cn.fleatransaction.entity.Student;
 import cn.fleatransaction.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
