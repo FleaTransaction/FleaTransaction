@@ -89,18 +89,17 @@ public class AccountController {
             return Result.fail("邮箱已被注册");
         User user2=userService.registerUser(registerDto.getUserphone(),registerDto.getPassword(), registerDto.getUseremail());
 
-        String jwt = jwtUtils.generateToken(user2.getUserId());
+        user = userService.getOne(new QueryWrapper<User>().eq("user_phone", registerDto.getUserphone()));
+
+        String jwt = jwtUtils.generateToken(user.getUserId());
         httpServletResponse.setHeader("Authorization",jwt);
         httpServletResponse.setHeader("Access-Control-Expose-Headers","Authorization");
 
 
         return Result.succ(MapUtil.builder()
-                .put("userid",user2.getUserId())
-                .put("username",user2.getUserName())
-                .put("userphone",user2.getUserPhone())
-                .put("userEmail",user2.getUserEmail())
-                .put("useravator",user2.getUserAvator())
-                .put("usercredit",user2.getUserCredit())
+                .put("userid",user.getUserId())
+                .put("userphone",user.getUserPhone())
+                .put("userEmail",user.getUserEmail())
                 .map()
         );
     }
