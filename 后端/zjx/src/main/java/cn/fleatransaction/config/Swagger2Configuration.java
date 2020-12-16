@@ -1,5 +1,6 @@
 package cn.fleatransaction.config;
 
+import io.swagger.annotations.Contact;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,7 +20,7 @@ public class Swagger2Configuration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.edu.shu.xj.ser"))
+                .apis(RequestHandlerSelectors.basePackage("cn.fleatransaction"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -30,6 +31,7 @@ public class Swagger2Configuration {
                 .description("系统API")
 //                .termsOfServiceUrl("/")
                 .version("1.0")
+                //.contact(new Contact("JARVIS", "http://127.0.0.1:8080/swagger-ui.html", ""))
                 .build();
     }
 

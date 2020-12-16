@@ -12,6 +12,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class AccountController {
     @Autowired
     JwtUtils jwtUtils;
 
-
+    @ApiOperation(value = "通过手机号登陆")
     @CrossOrigin
     @PostMapping("/phone")
     public Result loginByPhone(@Validated @RequestBody loginByPhoneDto loginByPhoneDto, HttpServletResponse httpServletResponse){
@@ -55,6 +56,8 @@ public class AccountController {
                 .map()
         );
     }
+
+    @ApiOperation(value = "通过邮箱登陆")
     @CrossOrigin
     @PostMapping("/email")
     public Result loginByEmail(@Validated @RequestBody loginByEmailDto loginByEmailDto, HttpServletResponse httpServletResponse){
@@ -78,6 +81,9 @@ public class AccountController {
                 .map()
         );
     }
+
+
+    @ApiOperation(value = "注册")
     @CrossOrigin
     @PostMapping("/register")
     public Result Register(@Validated @RequestBody RegisterDto registerDto, HttpServletResponse httpServletResponse){
