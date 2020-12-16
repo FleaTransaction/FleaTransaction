@@ -23,11 +23,7 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select * from user where user_name =#{name}")
     User queryUserName(@Param("name") String name);
 
-    @Insert("insert into user(user_phone,password) values(#{userPhone},#{password})")
-    @Options(useGeneratedKeys=true, keyProperty="userId", keyColumn="user_id")
-    Integer insertUserByPhone(User user);
-
-    @Insert("insert into user(user_email,password) values(#{userEmail},#{password})")
-    @Options(useGeneratedKeys=true, keyProperty="userId", keyColumn="user_id")
-    Integer insertUserByEmail(User user);
+    @Insert("insert into user(user_phone,password,user_email) values(#{userPhone},#{password},#{userEmail})")
+    //@Options(useGeneratedKeys=true, keyProperty="userId", keyColumn="user_id")
+    Integer insertUser(User user);
 }

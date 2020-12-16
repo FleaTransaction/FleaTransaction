@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
-public class loginByPhoneDot implements Serializable {
+public class loginByPhoneDto implements Serializable {
 
     @NotBlank(message = "手机账号不能为空")
     private String userphone;

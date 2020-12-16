@@ -26,20 +26,12 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     }
 
     @Override
-    public Integer registerUserByPhone(String phone, String password) {
+    public User registerUser(String phone, String password,String useremail) {
         User user = new User();
         user.setUserPhone(phone);
         user.setPassword(password);
-        return userMapper.insertUserByPhone(user);
+        user.setUserEmail(useremail);
+        userMapper.insertUser(user);
+        return user;
     }
-
-    @Override
-    public Integer registerUserByEmail(String email, String password) {
-        User user = new User();
-        user.setUserEmail(email);
-        user.setPassword(password);
-        return userMapper.insertUserByEmail(user);
-    }
-
-
 }
