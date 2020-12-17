@@ -1,11 +1,14 @@
 package cn.fleatransaction.controller;
 
 
+
 import cn.fleatransaction.common.Dot.RegisterDto;
 import cn.fleatransaction.common.Dot.loginByEmailDto;
 import cn.fleatransaction.common.Dot.loginByPhoneDto;
 import cn.fleatransaction.common.lang.Result;
+import cn.fleatransaction.entity.Admin;
 import cn.fleatransaction.entity.User;
+import cn.fleatransaction.service.IAdminService;
 import cn.fleatransaction.service.IUserService;
 import cn.fleatransaction.util.JwtUtils;
 import cn.hutool.core.lang.Assert;
@@ -30,17 +33,32 @@ public class AccountController {
     IUserService userService;
 
     @Autowired
+    IAdminService adminService;
+
+    @Autowired
     JwtUtils jwtUtils;
 
     @ApiOperation(value = "通过手机号登陆")
     @CrossOrigin
     @PostMapping("/phone")
     public Result loginByPhone(@Validated @RequestBody loginByPhoneDto loginByPhoneDto, HttpServletResponse httpServletResponse){
+        Admin admin = adminService.getOne(new QueryWrapper<Admin>().eq("admin_phone",loginByPhoneDto.getUserphone()));
+        if(admin != null){
+            if(!admin.getPassword().equals(loginByPhoneDto.getPassword())){
+                return Result.fail("密码错误");
+            }
+            else{
+                return Result.succ(201,"管理员账户",admin);
+            }
+        }
+
         User user = userService.getOne(new QueryWrapper<User>().eq("user_phone", loginByPhoneDto.getUserphone()));
         Assert.notNull(user,"用户不存在");
         if(!user.getPassword().equals(loginByPhoneDto.getPassword())){
             return Result.fail("密码错误");
         }
+
+
         String jwt = jwtUtils.generateToken(user.getUserId());
         httpServletResponse.setHeader("Authorization",jwt);
         httpServletResponse.setHeader("Access-Control-Expose-Headers","Authorization");
@@ -61,6 +79,17 @@ public class AccountController {
     @CrossOrigin
     @PostMapping("/email")
     public Result loginByEmail(@Validated @RequestBody loginByEmailDto loginByEmailDto, HttpServletResponse httpServletResponse){
+        Admin admin = adminService.getOne(new QueryWrapper<Admin>().eq("admin_email",loginByEmailDto.getUseremail()));
+        if(admin != null){
+            if(!admin.getPassword().equals(loginByEmailDto.getPassword())){
+                return Result.fail("密码错误");
+            }
+            else{
+                return Result.succ(201,"管理员账户",admin);
+            }
+        }
+
+
         User user = userService.getOne(new QueryWrapper<User>().eq("user_email", loginByEmailDto.getUseremail()));
         Assert.notNull(user,"用户不存在");
         if(!user.getPassword().equals(loginByEmailDto.getPassword())){
@@ -109,6 +138,8 @@ public class AccountController {
                 .map()
         );
     }
+
+
     @GetMapping("/logout")
     @RequiresAuthentication
     public Result logout() {
