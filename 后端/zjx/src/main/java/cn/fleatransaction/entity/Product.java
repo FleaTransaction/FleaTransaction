@@ -15,7 +15,6 @@ public class Product {
     @TableId(type = IdType.AUTO)
     private int productId;
 
-    @TableId(type = IdType.AUTO)
     private int userId;
 
     @NotBlank(message = "商品名不能为空")

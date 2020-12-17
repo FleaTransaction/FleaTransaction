@@ -40,7 +40,10 @@ public class AccountController {
     public Result loginByPhone(@Validated @RequestBody loginByPhoneDto loginByPhoneDto, HttpServletResponse httpServletResponse){
 
         User user = userService.getOne(new QueryWrapper<User>().eq("user_phone", loginByPhoneDto.getUserphone()));
-        Assert.notNull(user,"用户不存在");
+        //Assert.notNull(user,"用户不存在");
+        if(user == null){
+            return Result.fail("用户不存在");
+        }
         if(!user.getPassword().equals(loginByPhoneDto.getPassword())){
             return Result.fail("密码错误");
         }
@@ -71,7 +74,10 @@ public class AccountController {
     public Result loginByEmail(@Validated @RequestBody loginByEmailDto loginByEmailDto, HttpServletResponse httpServletResponse){
 
         User user = userService.getOne(new QueryWrapper<User>().eq("user_email", loginByEmailDto.getUseremail()));
-        Assert.notNull(user,"用户不存在");
+        //Assert.notNull(user,"用户不存在");
+        if(user == null){
+            return Result.fail("用户不存在");
+        }
         if(!user.getPassword().equals(loginByEmailDto.getPassword())){
             return Result.fail("密码错误");
         }
