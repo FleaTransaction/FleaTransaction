@@ -33,4 +33,6 @@ public class User {
 
     private String stuNumber;
 
+    private int userStatus;
+
 }

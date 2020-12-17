@@ -13,5 +13,6 @@
         <result column="realname" property="realName"/>
         <result column="idcard" property="idCard"/>
         <result column="stunumber" property="stuNumber"/>
+        <result column="user_status" property="userStatus"/>
     </resultMap>
 </mapper>
