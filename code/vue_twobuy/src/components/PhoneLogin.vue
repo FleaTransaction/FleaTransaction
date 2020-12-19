@@ -56,8 +56,8 @@ export default {
                     window.sessionStorage.setItem('token',res.data.token);
                     this.$router.push("/admin");
                 }
-                else{
-                     return this.$message.error(res.msg);
+                else if(res.code === 400){
+                     return this.$message.error((res.msg));
                 }
             });
         }
