@@ -48,7 +48,6 @@ export default {
                
                 const {data: res}=await this.$http.post("login/email",this.loginForm);
                 console.log(res);
-                this.$message.success("登录成功！");
                 if(res.code === 200){
                      window.sessionStorage.setItem('token',res.data.token);
                     this.$router.push("/home");
@@ -57,7 +56,7 @@ export default {
                     window.sessionStorage.setItem('token',res.data.token);
                     this.$router.push("/admin");
                 }
-                else{
+                else if (res.code === 400){
                      return this.$message.error(res.msg);
                 }
             });
