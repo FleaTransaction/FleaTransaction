@@ -8,5 +8,8 @@
         <result column="demand_name" property="demandName"/>
         <result column="demand_price" property="demandPrice"/>
         <result column="demand_description" property="demandDescription"/>
+        <result column="demand_phone" property="demandPhone"/>
+        <result column="demand_we_chat" property="demandWeChat"/>
+        <result column="demand_qq" property="demandQq"/>
     </resultMap>
 </mapper>

@@ -1,6 +1,7 @@
 package cn.fleatransaction.controller;
 
 import cn.fleatransaction.common.Dot.labelDto;
+import cn.fleatransaction.common.Dot.productDto;
 import cn.fleatransaction.common.lang.Result;
 import cn.fleatransaction.service.IProductService;
 import io.swagger.annotations.Api;
@@ -22,6 +23,7 @@ public class Controller {
     @Autowired
     IProductService productService;
 
+
     @ApiOperation(value="返回标签及对应子标签")
     @GetMapping("/labelList")
     public Result listChildLabel(){
@@ -29,7 +31,7 @@ public class Controller {
         //System.out.print(labelList);
         int size=labelList.size();
         //System.out.print(size);
-        List<labelDto> labelDtoList=new ArrayList<>(200);
+        List<labelDto> labelDtoList=new ArrayList<labelDto>(200);
         for(int i=0;i<size;i++){
             List<String> childLabelList=new ArrayList<>();
             childLabelList=productService.getChildLabel(labelList.get(i));
@@ -38,9 +40,19 @@ public class Controller {
             labelDto.setChildLabelName(childLabelList);
             labelDtoList.add(labelDto);
         }
-        return Result.succ(200,"返回成功",labelDtoList);
+        return cn.fleatransaction.common.lang.Result.succ(200,"返回成功",labelDtoList);
     }
-
-    
+    @ApiOperation(value="返回商品信息")
+    @GetMapping("/productList")
+    Result listProductInfo(){
+        List<productDto> productDtoList=productService.getProductInfo();
+        return Result.succ(200,"返回成功",productDtoList);
+    }
+    @ApiOperation(value="返回指定标签的商品信息")
+    @GetMapping("/queryProduct")
+    Result queryProductInfo(String labelName,String childLabelName){
+        List<productDto> productDtoList=productService.queryProductInfo(labelName,childLabelName);
+        return Result.succ(200,"返回成功",productDtoList);
+    }
 
 }

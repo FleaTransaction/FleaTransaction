@@ -62,7 +62,7 @@ public class AccountController {
                 .put("username",user.getUserName())
                 .put("userphone",user.getUserPhone())
                 .put("userEmail",user.getUserEmail())
-                .put("useravator",user.getUserAvator())
+                .put("useravator",user.getUserAvatar())
                 .put("usercredit",user.getUserCredit())
                 .map()
         );
@@ -96,7 +96,7 @@ public class AccountController {
                 .put("username",user.getUserName())
                 .put("userphone",user.getUserPhone())
                 .put("userEmail",user.getUserEmail())
-                .put("useravator",user.getUserAvator())
+                .put("useravator",user.getUserAvatar())
                 .put("usercredit",user.getUserCredit())
                 .map()
         );

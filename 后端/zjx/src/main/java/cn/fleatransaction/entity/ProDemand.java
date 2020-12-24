@@ -24,4 +24,10 @@ public class ProDemand {
     private String demandDescription;
 
     private double demandPrice;
+
+    private int demandPhone;
+
+    private String demandWeChat;
+
+    private int demandQq;
 }

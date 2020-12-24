@@ -9,12 +9,10 @@
         <result column="user_phone" property="userPhone"/>
         <result column="password" property="password"/>
         <result column="user_credit" property="userCredit"/>
-        <result column="user_avator" property="userAvator"/>
-        <result column="realname" property="realName"/>
-        <result column="idcard" property="idCard"/>
-        <result column="stunumber" property="stuNumber"/>
+        <result column="user_avatar" property="userAvatar"/>
+        <result column="real_name" property="realName"/>
+        <result column="id_card" property="idCard"/>
+        <result column="stu_number" property="stuNumber"/>
         <result column="user_status" property="userStatus"/>
-        <result column="user_wechat" property="userWechat"/>
-        <result column="user_qq" property="userQq"/>
     </resultMap>
 </mapper>

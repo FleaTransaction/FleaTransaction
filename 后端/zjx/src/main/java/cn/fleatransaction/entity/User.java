@@ -25,7 +25,7 @@ public class User {
 
     private float userCredit;
 
-    private String userAvator;
+    private String userAvatar;
 
     private String realName;
 
@@ -35,8 +35,5 @@ public class User {
 
     private int userStatus;
 
-    private int userWechat;
-
-    private int userQq;
 
 }
