@@ -5,5 +5,6 @@
     <resultMap id="appResultMap" type="cn.fleatransaction.entity.ProductPic">
         <result column="product_id" property="productId"/>
         <result column="product_picture" property="productPicture"/>
+        <result column="picture_id" property="pictureId"/>
     </resultMap>
 </mapper>

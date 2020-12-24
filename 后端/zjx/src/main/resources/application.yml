@@ -5,7 +5,7 @@ server:
     port: 8888
 spring:
     datasource:
-        password: zjx20000701
+        password: zucc
         type: com.alibaba.druid.pool.DruidDataSource
         url: jdbc:mysql://127.0.0.1:3306/flea?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
         username: root

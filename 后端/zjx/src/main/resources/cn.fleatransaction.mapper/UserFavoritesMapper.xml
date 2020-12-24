@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.fleatransaction.mapper.UserFavoritesMapper">
+<mapper namespace="cn.fleatransaction.mapper.UserFavouritesMapper">
     <!-- 通用查询映射结果 -->
-    <resultMap id="appResultMap" type="cn.fleatransaction.entity.UserFavorites">
+    <resultMap id="appResultMap" type="cn.fleatransaction.entity.UserFavourites">
         <result column="product_id" property="productId"/>
         <result column="user_id" property="userId"/>
+        <result column="favourites_id" property="favouritesId"/>
     </resultMap>
 </mapper>

@@ -27,30 +27,33 @@ public class UserController {
 
     @ApiOperation(value = "查询用户")
     @GetMapping("/query")
-    public User queryStudent(Integer id){
+    public Result queryStudent(Integer id){
         User oneuser = userService.findUser(id);
-        return oneuser;
+        return Result.succ(200,"查询成功",oneuser);
     }
 
 
     @ApiOperation(value = "获取用户列表")
     @GetMapping("/list")
-    public List<User> queryAllUser(){
-        return userService.list();
+    public Result queryAllUser(){
+        List<User> userList=userService.list();
+        return Result.succ(200,"获取成功",userList);
     }
 
 
     @ApiOperation(value = "获取用户数量")
     @GetMapping("/count")
-    public Integer count(){
-        return userService.count();
+    public Result count(){
+        int count=userService.count();
+        return Result.succ(200,"获取成功",count);
     }
 
-    @ApiOperation(value = "保存用户信息")
-    @PostMapping("/save")
+    @ApiOperation(value = "修改用户信息")
+    @PostMapping("/modify")
     public Result save(@Validated @RequestBody User user){
 
-        return Result.succ(user);
+        userService.save(user);
+        return Result.succ(200,"修改成功",user);
     }
     
 

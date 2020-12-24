@@ -5,6 +5,7 @@
     <resultMap id="appResultMap" type="cn.fleatransaction.entity.UserOrder">
         <result column="product_id" property="productId"/>
         <result column="user_id" property="userId"/>
+        <result column="order_id" property="orderId"/>
         <result column="order_status" property="orderStatus"/>
     </resultMap>
 </mapper>

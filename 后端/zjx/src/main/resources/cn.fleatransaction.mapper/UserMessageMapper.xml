@@ -6,5 +6,6 @@
         <result column="product_id" property="productId"/>
         <result column="user_id" property="userId"/>
         <result column="message" property="message"/>
+        <result column="message_id" property="messageId"/>
     </resultMap>
 </mapper>

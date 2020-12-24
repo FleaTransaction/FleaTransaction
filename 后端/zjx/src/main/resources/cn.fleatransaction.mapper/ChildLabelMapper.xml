@@ -3,8 +3,8 @@
 <mapper namespace="cn.fleatransaction.mapper.DemandLabelMapper">
     <!-- 通用查询映射结果 -->
     <resultMap id="appResultMap" type="cn.fleatransaction.entity.DemandLabel">
-        <result column="demand_id" property="demandId"/>
-        <result column="demand_label_id" property="demandLabelId"/>
         <result column="child_label_id" property="childLabelId"/>
+        <result column="label_id" property="labelId"/>
+        <result column="child_label_name" property="childLabelName"/>
     </resultMap>
 </mapper>

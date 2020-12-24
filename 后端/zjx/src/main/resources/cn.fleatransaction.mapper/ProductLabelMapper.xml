@@ -4,6 +4,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="appResultMap" type="cn.fleatransaction.entity.ProductLabel">
         <result column="product_id" property="productId"/>
-        <result column="label_id" property="labelId"/>
+        <result column="product_label_id" property="productLabelId"/>
+        <result column="child_label_id" property="childLabelId"/>
     </resultMap>
 </mapper>

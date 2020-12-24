@@ -7,11 +7,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("user_favorites")
-public class UserFavorites {
+@TableName("user_favourites")
+public class UserFavourites {
 
     private int userId;
 
+    @TableId(value = "favouritesId", type = IdType.AUTO)
+    private int favouritesId;
 
     private int productId;
 

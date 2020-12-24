@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 
 @Data
 @TableName("pro_demand")
@@ -22,8 +23,5 @@ public class ProDemand {
     @NotBlank(message = "需求描述不能为空")
     private String demandDescription;
 
-    @NotBlank(message = "可接受价格不能为空")
-    private float demandPrice;
-
-
+    private double demandPrice;
 }

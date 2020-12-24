@@ -1,4 +1,4 @@
-package cn.edu.shu.xj.ser;
+package cn.fleatransaction;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -14,5 +14,7 @@
         <result column="idcard" property="idCard"/>
         <result column="stunumber" property="stuNumber"/>
         <result column="user_status" property="userStatus"/>
+        <result column="user_wechat" property="userWechat"/>
+        <result column="user_qq" property="userQq"/>
     </resultMap>
 </mapper>

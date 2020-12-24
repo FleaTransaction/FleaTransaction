@@ -20,7 +20,7 @@ public class Product {
     @NotBlank(message = "商品名不能为空")
     private String productName;
 
-    @NotBlank(message = "商品价格不能为空")
+    //@NotBlank(message = "商品价格不能为空")
     private Float productPrice;
 
     @NotBlank(message = "商品描述不能为空")

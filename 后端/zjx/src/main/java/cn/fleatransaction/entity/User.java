@@ -35,4 +35,8 @@ public class User {
 
     private int userStatus;
 
+    private int userWechat;
+
+    private int userQq;
+
 }
