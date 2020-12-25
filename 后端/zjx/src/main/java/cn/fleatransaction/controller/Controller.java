@@ -1,6 +1,7 @@
 package cn.fleatransaction.controller;
 
 import cn.fleatransaction.common.Dot.labelDto;
+import cn.fleatransaction.common.Dot.messageDto;
 import cn.fleatransaction.common.Dot.productDto;
 import cn.fleatransaction.common.lang.Result;
 import cn.fleatransaction.service.IProductService;
@@ -54,5 +55,20 @@ public class Controller {
         List<productDto> productDtoList=productService.queryProductInfo(labelName,childLabelName);
         return Result.succ(200,"返回成功",productDtoList);
     }
+
+    @ApiOperation(value="返回指定ID的商品信息")
+    @GetMapping("/queryProductById")
+    Result getProductInfoById(int productId){
+        List<productDto> productDtoList=productService.getProductInfoById(productId);
+        return Result.succ(200,"返回成功",productDtoList);
+    }
+
+    @ApiOperation(value="返回指定商品ID的所有留言信息")
+    @GetMapping("/queryMessageById")
+    Result getMessageById(int productId){
+        List<messageDto> productDtoList=productService.getMessageById(productId);
+        return Result.succ(200,"返回成功",productDtoList);
+    }
+
 
 }

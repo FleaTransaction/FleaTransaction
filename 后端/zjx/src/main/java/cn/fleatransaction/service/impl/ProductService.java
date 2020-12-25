@@ -4,6 +4,7 @@ package cn.fleatransaction.service.impl;
 
 
 import cn.fleatransaction.common.Dot.labelDto;
+import cn.fleatransaction.common.Dot.messageDto;
 import cn.fleatransaction.common.Dot.productDto;
 import cn.fleatransaction.entity.Product;
 import cn.fleatransaction.mapper.ProductMapper;
@@ -39,6 +40,16 @@ public class ProductService extends ServiceImpl<ProductMapper, Product> implemen
     @Override
     public List<productDto> queryProductInfo(String labelName,String ChildLabelName) {
         return productMapper.queryProductInfo(labelName,ChildLabelName);
+    }
+
+    @Override
+    public List<productDto> getProductInfoById(int productId) {
+        return productMapper.getProductInfoById(productId);
+    }
+
+    @Override
+    public List<messageDto> getMessageById(int productId) {
+        return productMapper.getMessageById(productId);
     }
 
 

@@ -7,5 +7,6 @@
         <result column="user_id" property="userId"/>
         <result column="message" property="message"/>
         <result column="message_id" property="messageId"/>
+        <result column="message_time" property="messageTime"/>
     </resultMap>
 </mapper>

@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 
 @Data
 public class productDto implements Serializable {
+    private int productId;
+
     private String productName;
 
     private double productPrice;

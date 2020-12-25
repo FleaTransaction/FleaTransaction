@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 @TableName("user_message")
 public class UserMessage {
@@ -18,5 +20,7 @@ public class UserMessage {
 
     @TableId(value = "messageId", type = IdType.AUTO)
     private int messageId;
+
+    private Timestamp messageTime;
 
 }
