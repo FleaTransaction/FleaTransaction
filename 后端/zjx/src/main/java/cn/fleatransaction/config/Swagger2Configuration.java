@@ -27,8 +27,8 @@ public class Swagger2Configuration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("模板系统")
-                .description("系统API")
+                .title("fleatransaction系统")
+                .description("接口API")
 //                .termsOfServiceUrl("/")
                 .version("1.0")
                 //.contact(new Contact("JARVIS", "http://127.0.0.1:8080/swagger-ui.html", ""))

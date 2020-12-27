@@ -95,7 +95,7 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
+            <version>2.9.2</version>
         </dependency>
 
         <dependency>
@@ -114,11 +114,6 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.asciidoctor</groupId>
-            <artifactId>asciidoctorj</artifactId>
-            <version>1.5.3</version>
         </dependency>
 
     </dependencies>
@@ -190,14 +185,6 @@
 <!--                        <configuration>-->
 <!--                            <backend>html5</backend>-->
 <!--                            <outputDirectory>target/doc/api/</outputDirectory>-->
-<!--                            <sourceHighlighter>prettify</sourceHighlighter>-->
-<!--                            <attributes>-->
-<!--                                <toc>left</toc>-->
-<!--                                <icons>font</icons>-->
-<!--                                <sectanchors>true</sectanchors>-->
-<!--                                &lt;!&ndash; set the idprefix to blank &ndash;&gt;-->
-<!--                                <idprefix/>-->
-<!--                            </attributes>-->
 <!--                        </configuration>-->
 <!--                    </execution>-->
 
@@ -215,6 +202,7 @@
 
 <!--                </executions>-->
 <!--            </plugin>-->
+
 
 
 
