@@ -14,7 +14,7 @@ public class ProductPic {
 
     private String productPicture;
 
-    @TableId(value = "pictureId", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int pictureId;
 
 }

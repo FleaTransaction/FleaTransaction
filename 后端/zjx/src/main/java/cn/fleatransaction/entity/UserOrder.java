@@ -10,7 +10,7 @@ import lombok.Data;
 @TableName("user_order")
 public class UserOrder {
 
-    @TableId(value = "orderId", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int orderId;
 
     private int userId;

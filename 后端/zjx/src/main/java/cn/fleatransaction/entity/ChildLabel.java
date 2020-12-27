@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @TableName("child_label")
 public class ChildLabel {
-    @TableId(value = "childLabelId", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int childLabelId;
 
     private  int labelId;

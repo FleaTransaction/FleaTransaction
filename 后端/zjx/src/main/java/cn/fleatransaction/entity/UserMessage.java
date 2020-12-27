@@ -18,7 +18,7 @@ public class UserMessage {
 
     private String message;
 
-    @TableId(value = "messageId", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int messageId;
 
     private Timestamp messageTime;

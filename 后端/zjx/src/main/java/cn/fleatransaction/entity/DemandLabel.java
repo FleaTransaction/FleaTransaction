@@ -10,7 +10,7 @@ import lombok.Data;
 @TableName("demand_label")
 public class DemandLabel {
 
-    @TableId(value = "demandLabelId", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int demandLabelId;
 
     private int childLabelId;

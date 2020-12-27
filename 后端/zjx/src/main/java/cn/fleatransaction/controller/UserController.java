@@ -12,7 +12,6 @@ import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -68,34 +67,35 @@ public class UserController {
 
     @PostMapping("/uploadavatar")
     @ApiOperation(value = "头像上传")
-    public Result upload(@RequestParam("imgFile") MultipartFile imgFile, int uid){
+    public Result upload(@RequestParam("imgfile") MultipartFile imgfile, int userid){
 
-        if (imgFile.isEmpty()) {
+        if (imgfile.isEmpty()) {
             return Result.fail("上传文件不能为空！");
         }
-        String filename = imgFile.getOriginalFilename();
+        String filename = imgfile.getOriginalFilename();
         String prefix = filename.substring(filename.lastIndexOf(".") + 1);
         filename = UUID.randomUUID().toString().replace("-", "") + "." + prefix;
 
         // 存放上传图片的文件夹
-        File fileDir = uploadUtils.getImgDirFile();
+        File fileDir = uploadUtils.getAvatarDirFile();
         // 输出文件夹绝对路径  -- 这里的绝对路径是相当于当前项目的路径而不是“容器”路径
         String url = fileDir.getAbsolutePath();
         try {
             // 构建真实的文件路径
             File newFile = new File(url + File.separator + filename);
             System.err.println(newFile.getAbsolutePath());
+            String urlava = newFile.getAbsolutePath();
             // 上传图片到 -》 “绝对路径”
-            imgFile.transferTo(newFile);
+            imgfile.transferTo(newFile);
             User u = new User();
             //u.setUserId(uid);
-            u.setUserAvatar(filename);
+            u.setUserAvatar(urlava);
             //userService.updateById(u);
             /**
              * 保存头像
              */
-            userService.update(u, new QueryWrapper<User>().eq("user_id", uid));
-            User user = userService.getOne(new QueryWrapper<User>().eq("user_id", uid));
+            userService.update(u, new QueryWrapper<User>().eq("user_id", userid));
+            User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userid));
             return Result.succ(200,"上传成功",MapUtil.builder()
                     .put("userid",user.getUserId())
                     .put("username",user.getUserName())

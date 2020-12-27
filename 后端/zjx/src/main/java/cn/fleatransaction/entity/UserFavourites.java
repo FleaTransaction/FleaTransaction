@@ -12,7 +12,7 @@ public class UserFavourites {
 
     private int userId;
 
-    @TableId(value = "favouritesId", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private int favouritesId;
 
     private int productId;
