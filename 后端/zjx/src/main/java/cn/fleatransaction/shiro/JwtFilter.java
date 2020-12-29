@@ -44,11 +44,11 @@ public class JwtFilter extends AuthenticatingFilter {
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        Throwable throwable = e.getCause() == null ? e : e.getCause();
+        Result r = Result.fail(throwable.getMessage());
+        String json = JSONUtil.toJsonStr(r);
         try {
             //处理登录失败的异常
-            Throwable throwable = e.getCause() == null ? e : e.getCause();
-            Result r = Result.fail(throwable.getMessage());
-            String json = JSONUtil.toJsonStr(r);
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
         }
@@ -65,12 +65,11 @@ public class JwtFilter extends AuthenticatingFilter {
             return true;
         }else{
              //校验jwt
-            Claims claims = jwtUtils.getClaimByToken(jwt);
-            if(claims == null || jwtUtils.isTokenExpired(claims.getExpiration())){
+            Claims claim = jwtUtils.getClaimByToken(jwt);
+            if(claim == null || jwtUtils.isTokenExpired(claim.getExpiration())){
                 throw new ExpiredCredentialsException("Token已失效，请重新登陆");
             }
             //执行登陆
-
             return executeLogin(servletRequest, servletResponse);
         }
 

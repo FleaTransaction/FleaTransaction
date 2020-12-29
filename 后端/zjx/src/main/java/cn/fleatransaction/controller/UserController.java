@@ -7,11 +7,13 @@ package cn.fleatransaction.controller;
 import cn.fleatransaction.common.lang.Result;
 import cn.fleatransaction.entity.User;
 import cn.fleatransaction.service.IUserService;
+import cn.fleatransaction.util.ShiroUtils;
 import cn.fleatransaction.util.UploadUtils;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +38,9 @@ public class UserController {
 
     @ApiOperation(value = "查询用户")
     @GetMapping("/query")
-    public Result queryStudent(Integer id){
+    //@RequiresAuthentication
+    @CrossOrigin
+    public Result queryUser(Integer id){
         User oneuser = userService.findUser(id);
         return Result.succ(200,"查询成功",oneuser);
     }
@@ -44,6 +48,8 @@ public class UserController {
 
     @ApiOperation(value = "获取用户列表")
     @GetMapping("/list")
+    //@RequiresAuthentication
+    @CrossOrigin
     public Result queryAllUser(){
         List<User> userList=userService.list();
         return Result.succ(200,"获取成功",userList);
@@ -52,6 +58,7 @@ public class UserController {
 
     @ApiOperation(value = "获取用户数量")
     @GetMapping("/count")
+    //@RequiresAuthentication
     public Result count(){
         int count=userService.count();
         return Result.succ(200,"获取成功",count);
@@ -59,15 +66,20 @@ public class UserController {
 
     @ApiOperation(value = "修改用户信息")
     @PostMapping("/modify")
+    //@RequiresAuthentication
+    @CrossOrigin
     public Result save(@Validated @RequestBody User user){
-
         userService.save(user);
         return Result.succ(200,"修改成功",user);
     }
 
     @PostMapping("/uploadavatar")
     @ApiOperation(value = "头像上传")
-    public Result upload(@RequestParam("imgfile") MultipartFile imgfile, int userid){
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result upload(@RequestParam("imgfile") MultipartFile imgfile){
+        User temp = new User();
+        temp.setUserId(ShiroUtils.getProfile().getUserId());
 
         if (imgfile.isEmpty()) {
             return Result.fail("上传文件不能为空！");
@@ -94,8 +106,8 @@ public class UserController {
             /**
              * 保存头像
              */
-            userService.update(u, new QueryWrapper<User>().eq("user_id", userid));
-            User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userid));
+            userService.update(u, new QueryWrapper<User>().eq("user_id", temp.getUserId()));
+            User user = userService.getOne(new QueryWrapper<User>().eq("user_id", temp.getUserId()));
             return Result.succ(200,"上传成功",MapUtil.builder()
                     .put("userid",user.getUserId())
                     .put("username",user.getUserName())

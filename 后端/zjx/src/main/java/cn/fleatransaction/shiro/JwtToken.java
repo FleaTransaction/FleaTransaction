@@ -2,6 +2,7 @@ package cn.fleatransaction.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
+
 public class JwtToken implements AuthenticationToken {
 
     private String token;
@@ -10,10 +11,12 @@ public class JwtToken implements AuthenticationToken {
         this.token = jwt;
     }
 
+
     @Override
     public Object getPrincipal() {
         return token;
     }
+
 
     @Override
     public Object getCredentials() {

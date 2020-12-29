@@ -3,6 +3,8 @@ package cn.fleatransaction.config;
 
 import cn.fleatransaction.shiro.AccountRealm;
 import cn.fleatransaction.shiro.JwtFilter;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -28,16 +30,10 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Autowired
-    RedisSessionDAO redisSessionDAO;
-
-    @Autowired
-    RedisCacheManager redisCacheManager;
-
-    @Autowired
     JwtFilter jwtFilter;
 
     @Bean
-    public SessionManager sessionManager() {
+    public SessionManager sessionManager(RedisSessionDAO redisSessionDAO) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 
         // inject redisSessionDAO
@@ -49,7 +45,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SessionsSecurityManager securityManager(AccountRealm accountRealm, SessionManager sessionManager) {
+    public SessionsSecurityManager securityManager(AccountRealm accountRealm,
+                                                   SessionManager sessionManager,
+                                                   RedisCacheManager redisCacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager(accountRealm);
 
         //inject sessionManager
@@ -59,6 +57,12 @@ public class ShiroConfig {
         securityManager.setCacheManager(redisCacheManager);
 
         // other stuff...
+//        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+//        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+//        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+//        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+//        securityManager.setSubjectDAO(subjectDAO);
+
 
         return securityManager;
     }
@@ -77,15 +81,18 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         Map<String, Filter> filters = new HashMap<>();
-        filters.put("jwt", new JwtFilter());
+        filters.put("jwt", getJwtFilter());
         shiroFilter.setFilters(filters);
         Map<String, String> filterMap = shiroFilterChainDefinition.getFilterChainMap();
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         return shiroFilter;
     }
+    
 
-
-
+    @Bean
+    public JwtFilter getJwtFilter(){
+        return new JwtFilter();
+    }
 
     // 开启注解代理（默认好像已经开启，可以不要）
     @Bean
