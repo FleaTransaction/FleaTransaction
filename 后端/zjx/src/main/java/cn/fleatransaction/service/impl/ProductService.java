@@ -52,5 +52,10 @@ public class ProductService extends ServiceImpl<ProductMapper, Product> implemen
         return productMapper.getMessageById(productId);
     }
 
+    @Override
+    public int saveProduct(Product product) {
+        return productMapper.saveProduct(product);
+    }
+
 
 }

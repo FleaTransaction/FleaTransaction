@@ -26,5 +26,7 @@ public interface IProductService extends IService<Product> {
 
      List<messageDto> getMessageById(int productId);
 
+     int saveProduct(Product product);
+
 
 }

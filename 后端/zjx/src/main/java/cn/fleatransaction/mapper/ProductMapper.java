@@ -7,6 +7,8 @@ import cn.fleatransaction.common.Dot.messageDto;
 import cn.fleatransaction.common.Dot.productDto;
 import cn.fleatransaction.entity.Product;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,7 @@ import java.util.List;
 public interface ProductMapper extends BaseMapper<Product> {
 
     /**
-     * @param id
+     * @param
      * @return
      */
     @Select("SELECT label_name FROM label")
@@ -37,10 +39,14 @@ public interface ProductMapper extends BaseMapper<Product> {
             "and label_name=#{label_name} and child_label_name=#{child_label_name}")
     List<productDto> queryProductInfo(@Param("label_name")String labelName,@Param("child_label_name")String childLabelName);
 
-    @Select("select product.product_id,product_name,product_price,product_description,product_time,product_picture from product,product_pic where product.product_id=product_pic.product_id and product.product_id=#{productId}")
+    @Select("select product.product_id,product_name,product_price,product_description,product_time,product_picture,product_phone,product_qq,product_we_chat from product,product_pic where product.product_id=product_pic.product_id and product.product_id=#{productId}")
     List<productDto> getProductInfoById(@Param("productId")int productId);
 
     @Select("select user_name,user_avatar,message,message_time from user_message,`user` where  `user`.user_id=user_message.user_id and user_message.product_id=#{productId}")
     List<messageDto> getMessageById(@Param("productId")int productId);
+
+    @Insert("insert into product(user_id, product_name, product_price, product_description) values (#{userId}, #{productName}, #{productPrice}, #{productDescription})")
+    @Options(useGeneratedKeys = true, keyProperty = "productId", keyColumn = "product_id")
+    int saveProduct(Product product);
 
 }

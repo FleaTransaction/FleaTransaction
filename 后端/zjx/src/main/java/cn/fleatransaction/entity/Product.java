@@ -26,4 +26,10 @@ public class Product {
     @NotBlank(message = "商品描述不能为空")
     private String productDescription;
 
+    private String productPhone;
+
+    private String productQq;
+
+    private String productWeChat;
+
 }

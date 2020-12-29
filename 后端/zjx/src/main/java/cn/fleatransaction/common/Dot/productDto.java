@@ -18,4 +18,10 @@ public class productDto implements Serializable {
     private Timestamp productTime;
 
     private String productPicture;
+
+    private String productPhone;
+
+    private String productQq;
+
+    private String productWeChat;
 }

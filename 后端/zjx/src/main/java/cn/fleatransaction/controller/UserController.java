@@ -38,17 +38,21 @@ public class UserController {
 
     @ApiOperation(value = "查询用户")
     @GetMapping("/query")
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @CrossOrigin
-    public Result queryUser(Integer id){
+    public Result queryUser(Integer id) {
         User oneuser = userService.findUser(id);
-        return Result.succ(200,"查询成功",oneuser);
+        if (oneuser != null) {
+            return Result.succ(200, "查询成功", oneuser);
+        }else{
+            return Result.fail("该用户不存在");
+        }
     }
 
 
     @ApiOperation(value = "获取用户列表")
     @GetMapping("/list")
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @CrossOrigin
     public Result queryAllUser(){
         List<User> userList=userService.list();
@@ -66,9 +70,10 @@ public class UserController {
 
     @ApiOperation(value = "修改用户信息")
     @PostMapping("/modify")
-    //@RequiresAuthentication
+    @RequiresAuthentication
     @CrossOrigin
     public Result save(@Validated @RequestBody User user){
+        user.setUserId(ShiroUtils.getProfile().getUserId());
         userService.save(user);
         return Result.succ(200,"修改成功",user);
     }
