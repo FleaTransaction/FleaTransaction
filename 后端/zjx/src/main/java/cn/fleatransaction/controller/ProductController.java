@@ -6,6 +6,7 @@ import cn.fleatransaction.entity.ProductPic;
 import cn.fleatransaction.entity.User;
 import cn.fleatransaction.service.IProductPicService;
 import cn.fleatransaction.service.IProductService;
+import cn.fleatransaction.service.IUserService;
 import cn.fleatransaction.util.ShiroUtils;
 import cn.fleatransaction.util.UploadUtils;
 import cn.hutool.core.map.MapUtil;
@@ -30,6 +31,9 @@ public class ProductController {
 
     @Autowired
     IProductService productService;
+
+    @Autowired
+    IUserService userService;
 
     @Autowired
     UploadUtils uploadUtils;
@@ -81,12 +85,21 @@ public class ProductController {
     public Result add(@RequestParam("productname") String productname,
                       @RequestParam("productprice") Float productprice,
                       @RequestParam("productdescription") String productdescription,
-                      @RequestParam("imgfile") MultipartFile[] imgfile) {
+                      @RequestParam("imgfile") MultipartFile[] imgfile,
+                      @RequestParam(value = "productphone",required = true,defaultValue = "null") String productphone,
+                      @RequestParam(value = "productwechat",required = true,defaultValue = "null") String productwechat,
+                      @RequestParam(value = "productqq",required = true,defaultValue = "null") String productqq) {
         Product product = new Product();
         product.setUserId(ShiroUtils.getProfile().getUserId());
+        User user = userService.findUser(ShiroUtils.getProfile().getUserId());
+        if(productphone.equals("null")){
+            product.setProductPhone(user.getUserPhone());
+        }
         product.setProductName(productname);
         product.setProductPrice(productprice);
         product.setProductDescription(productdescription);
+        product.setProductWeChat(productwechat);
+        product.setProductQq(productqq);
         productService.saveProduct(product);
         int count = imgfile.length;
         if (count <= 0) {

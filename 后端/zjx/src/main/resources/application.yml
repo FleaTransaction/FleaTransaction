@@ -1,6 +1,6 @@
 fleatransaction:
     jwt:
-        expire: 604800
+        expire: 86400
         header: Authorization
         secret: f4e2e52034348f86b67cde581c0f9eb5
 mybatis-plus:

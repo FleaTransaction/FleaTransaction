@@ -45,7 +45,7 @@ public interface ProductMapper extends BaseMapper<Product> {
     @Select("select user_name,user_avatar,message,message_time from user_message,`user` where  `user`.user_id=user_message.user_id and user_message.product_id=#{productId}")
     List<messageDto> getMessageById(@Param("productId")int productId);
 
-    @Insert("insert into product(user_id, product_name, product_price, product_description) values (#{userId}, #{productName}, #{productPrice}, #{productDescription})")
+    @Insert("insert into product(user_id, product_name, product_price, product_description, product_phone, product_qq, product_we_chat) values (#{userId}, #{productName}, #{productPrice}, #{productDescription}, #{productPhone}, #{productQq},#{productWeChat})")
     @Options(useGeneratedKeys = true, keyProperty = "productId", keyColumn = "product_id")
     int saveProduct(Product product);
 

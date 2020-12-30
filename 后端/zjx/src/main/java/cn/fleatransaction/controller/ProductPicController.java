@@ -51,29 +51,23 @@ public class ProductPicController {
         return Result.succ(200,"查询成功",productPicList);
     }
 
-    @ApiOperation(value="添加产品图片")
-    @PostMapping("/add")
-    public Result addProductPic(@Validated @RequestBody ProductPic productPic){
-        Product product= productService.getOne(new QueryWrapper<Product>().eq("product_id",productPic.getProductId()));
-        if(product==null)
-            return Result.fail(400,"该商品不存在，订单图片添加失败",null);
-
-        productPicService.save(productPic);
-        return Result.succ(200,"添加成功",productPic);
-    }
 
     @ApiOperation(value="删除产品图片")
     @GetMapping("/remove")
     public Result removeProductPic(int pictureId){
-        productPicService.removeById(pictureId);
-        return Result.succ(200,"删除成功",null);
+        if(productPicService.removeById(pictureId)) {
+            return Result.succ(200, "删除成功", null);
+        }
+        return Result.fail("删除失败");
     }
 
     @ApiOperation(value="修改产品图片")
     @PostMapping("/modify")
     public Result modifyProductPic(@Validated @RequestBody ProductPic productPic){
-        productPicService.updateById(productPic);
-        return Result.succ(200,"修改成功",productPic);
+        if(productPicService.updateById(productPic)) {
+            return Result.succ(200, "修改成功", productPic);
+        }
+        return Result.fail("修改失败");
     }
 
     @PostMapping("/uploadproductpic")

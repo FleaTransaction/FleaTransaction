@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 
 @Data
 @TableName("product")
@@ -25,6 +26,8 @@ public class Product {
 
     @NotBlank(message = "商品描述不能为空")
     private String productDescription;
+
+    private Timestamp productTime;
 
     private String productPhone;
 

@@ -7,9 +7,11 @@ import cn.fleatransaction.service.IProductService;
 import cn.fleatransaction.service.IUserOrderService;
 import cn.fleatransaction.service.impl.ProductService;
 import cn.fleatransaction.service.impl.UserOrderService;
+import cn.fleatransaction.util.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,27 +31,48 @@ public class OrderController {
 
     @ApiOperation(value="查询订单")
     @GetMapping("/query")
-    public Result queryOrder(String orderId){
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result queryOrder(int orderId){
         UserOrder userOrder= userOrderService.getOne(new QueryWrapper<UserOrder>().eq("order_id",orderId));
-        return Result.succ(200,"查询成功",userOrder);
+        if(userOrder!=null) {
+            return Result.succ(200, "查询成功", userOrder);
+        }else{
+            return Result.succ(200, "查询成功,暂无订单", null);
+        }
     }
 
     @ApiOperation(value="返回用户的所有订单")
     @GetMapping("/personalList")
-    public Result personalList(String userId){
-        List<UserOrder> orderList= userOrderService.list(new QueryWrapper<UserOrder>().eq("user_id",userId));
-        return Result.succ(200,"查询成功",orderList);
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result personalList(){
+        List<UserOrder> orderList= userOrderService.list(new QueryWrapper<UserOrder>().eq("user_id",
+                ShiroUtils.getProfile().getUserId()));
+        if(orderList != null) {
+            return Result.succ(200, "查询成功", orderList);
+        }else{
+            return Result.succ(200, "查询成功,暂无订单", null);
+        }
     }
 
     @ApiOperation(value="返回所有订单")
     @GetMapping("/list")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result list(){
         List<UserOrder> orderList= userOrderService.list();
-        return Result.succ(200,"查询成功",orderList);
+        if(orderList != null) {
+            return Result.succ(200, "查询成功", orderList);
+        }else{
+            return Result.succ(200, "查询成功,暂无订单", null);
+        }
     }
 
     @ApiOperation(value="添加订单")
     @PostMapping("/add")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result add(@Validated @RequestBody UserOrder userOrder){
         UserOrder userOrder1=userOrderService.getOne(new QueryWrapper<UserOrder>().eq("product_id",userOrder.getProductId()));
         if(userOrder1!=null)
@@ -64,13 +87,17 @@ public class OrderController {
 
     @ApiOperation(value="删除订单")
     @GetMapping("/remove")
-    public Result remove(String orderId){
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result remove(int orderId){
         userOrderService.remove(new QueryWrapper<UserOrder>().eq("order_id",orderId));
         return Result.succ(200,"删除成功",null);
     }
 
     @ApiOperation(value="修改订单")
     @PostMapping("/modify")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result modify(@Validated @RequestBody UserOrder userOrder){
         UserOrder userOrder1=userOrderService.getOne(new QueryWrapper<UserOrder>().eq("product_id",userOrder.getProductId()));
         if(userOrder1!=null)

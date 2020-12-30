@@ -9,9 +9,11 @@ import cn.fleatransaction.service.ILabelService;
 import cn.fleatransaction.service.IProductService;
 import cn.fleatransaction.service.IUserFavouritesService;
 import cn.fleatransaction.service.IUserService;
+import cn.fleatransaction.util.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,17 +27,30 @@ public class UserFavouritesController {
 
     @Autowired
     IUserFavouritesService userFavouritesService;
+
+    @Autowired
     IUserService userService;
+
+    @Autowired
     IProductService productService;
 
     @ApiOperation(value="查询用户个人的商品收藏")
     @GetMapping("/query")
-    public Result queryUserFavourites(int userId){
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result queryUserFavourites(){
+        int userId = ShiroUtils.getProfile().getUserId();
         List<UserFavourites> userFavouritesList=userFavouritesService.list(new QueryWrapper<UserFavourites>().eq("user_id",userId));
-        return Result.succ(200,"查询成功",userFavouritesList);
+        if(userFavouritesList != null) {
+            return Result.succ(200, "查询成功", userFavouritesList);
+        }
+        return Result.fail("查询失败");
     }
+
     @ApiOperation(value="添加商品收藏")
     @PostMapping("/add")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result addUserFavourites(@Validated @RequestBody UserFavourites userFavourites){
         User user=userService.getById(userFavourites.getUserId());
         if(user==null)

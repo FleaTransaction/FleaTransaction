@@ -133,6 +133,7 @@ public class AccountController {
 
     @GetMapping("/logout")
     @RequiresAuthentication
+    @CrossOrigin
     public Result logout() {
         SecurityUtils.getSubject().logout();
         return Result.succ(null);

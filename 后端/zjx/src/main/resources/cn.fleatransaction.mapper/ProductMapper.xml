@@ -11,6 +11,7 @@
         <result column="product_phone" property="productPhone"/>
         <result column="product_qq" property="productQq"/>
         <result column="product_we_chat" property="productWeChat"/>
+        <result column="product_time" property="productTime"/>
     </resultMap>
 </mapper>
 

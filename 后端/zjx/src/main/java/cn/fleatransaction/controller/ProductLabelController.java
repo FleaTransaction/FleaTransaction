@@ -26,7 +26,11 @@ public class ProductLabelController {
 
     @Autowired
     IProductLabelService productLabelService;
+
+    @Autowired
     IChildLabelService childLabelService;
+
+    @Autowired
     IProductService productService;
 
     @ApiOperation(value="查询产品对应标签")

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-@Api(tags="提供给前端的工具类")
+@Api(tags="提供给前端的工具接口")
 @RestController
 @RequestMapping("/tools")
 public class Controller {
@@ -47,12 +47,18 @@ public class Controller {
     @GetMapping("/productList")
     Result listProductInfo(){
         List<productDto> productDtoList=productService.getProductInfo();
+        if(productDtoList == null){
+            return Result.succ(200,"返回成功,暂无商品",null);
+        }
         return Result.succ(200,"返回成功",productDtoList);
     }
     @ApiOperation(value="返回指定标签的商品信息")
     @GetMapping("/queryProduct")
     Result queryProductInfo(String labelName,String childLabelName){
         List<productDto> productDtoList=productService.queryProductInfo(labelName,childLabelName);
+        if(productDtoList == null){
+            return Result.succ(200,"返回成功,暂无商品",null);
+        }
         return Result.succ(200,"返回成功",productDtoList);
     }
 
@@ -60,6 +66,9 @@ public class Controller {
     @GetMapping("/queryProductById")
     Result getProductInfoById(int productId){
         List<productDto> productDtoList=productService.getProductInfoById(productId);
+        if(productDtoList == null){
+            return Result.succ(200,"返回成功,该商品不存在",null);
+        }
         return Result.succ(200,"返回成功",productDtoList);
     }
 
@@ -67,6 +76,9 @@ public class Controller {
     @GetMapping("/queryMessageById")
     Result getMessageById(int productId){
         List<messageDto> productDtoList=productService.getMessageById(productId);
+        if(productDtoList == null){
+            return Result.succ(200,"返回成功,暂无留言",null);
+        }
         return Result.succ(200,"返回成功",productDtoList);
     }
 

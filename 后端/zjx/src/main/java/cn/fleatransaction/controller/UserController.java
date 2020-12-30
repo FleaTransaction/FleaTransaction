@@ -40,8 +40,8 @@ public class UserController {
     @GetMapping("/query")
     @RequiresAuthentication
     @CrossOrigin
-    public Result queryUser(Integer id) {
-        User oneuser = userService.findUser(id);
+    public Result queryUser(@RequestParam("userid") Integer userid) {
+        User oneuser = userService.findUser(userid);
         if (oneuser != null) {
             return Result.succ(200, "查询成功", oneuser);
         }else{
@@ -74,8 +74,10 @@ public class UserController {
     @CrossOrigin
     public Result save(@Validated @RequestBody User user){
         user.setUserId(ShiroUtils.getProfile().getUserId());
-        userService.save(user);
-        return Result.succ(200,"修改成功",user);
+        if(userService.updateById(user)) {
+            return Result.succ(200, "修改成功", user);
+        }
+        return Result.fail("修改失败!");
     }
 
     @PostMapping("/uploadavatar")

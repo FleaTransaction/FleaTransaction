@@ -11,5 +11,6 @@
         <result column="demand_phone" property="demandPhone"/>
         <result column="demand_we_chat" property="demandWeChat"/>
         <result column="demand_qq" property="demandQq"/>
+        <result column="demand_time" property="demandTime"/>
     </resultMap>
 </mapper>
