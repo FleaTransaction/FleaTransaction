@@ -12,6 +12,7 @@ import cn.fleatransaction.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,11 @@ public class UserMessageController {
 
     @Autowired
     IUserMessageService userMessageService;
+
+    @Autowired
     IUserService userService;
+
+    @Autowired
     IProductService productService;
 
 
@@ -35,8 +40,12 @@ public class UserMessageController {
         List<UserMessage> userMessageList=userMessageService.list(new QueryWrapper<UserMessage>().eq("product_id",productId));
         return Result.succ(200,"查询成功",userMessageList);
     }
+
+
     @ApiOperation(value="添加留言")
     @PostMapping("/add")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result addUserMessage(@Validated @RequestBody UserMessage userMessage){
        User user=userService.getById(userMessage.getUserId());
        if(user==null)
@@ -48,14 +57,21 @@ public class UserMessageController {
        userMessageService.save(userMessage);
         return Result.succ(200,"添加成功",userMessage);
     }
+
+
     @ApiOperation(value="删除留言")
     @GetMapping("/remove")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result removeUserMessage(int messageId){
         userMessageService.removeById(messageId);
         return Result.succ(200,"删除成功",null);
     }
+
     @ApiOperation(value="修改留言")
     @PostMapping("/modify")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result modifyUserMessage(@Validated @RequestBody UserMessage userMessage){
         userMessageService.updateById(userMessage);
         return Result.succ(200,"修改成功",userMessage);

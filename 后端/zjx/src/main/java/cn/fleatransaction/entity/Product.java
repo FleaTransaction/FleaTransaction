@@ -35,4 +35,6 @@ public class Product {
 
     private String productWeChat;
 
+    private int productCount;
+
 }

@@ -10,6 +10,7 @@ import cn.fleatransaction.service.IProductService;
 import cn.fleatransaction.service.IUserFavouritesService;
 import cn.fleatransaction.service.IUserService;
 import cn.fleatransaction.util.ShiroUtils;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -64,12 +65,16 @@ public class UserFavouritesController {
     }
     @ApiOperation(value="删除商品收藏")
     @GetMapping("/remove")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result removeUserFavourites(@RequestBody UserFavourites userFavourites){
         userFavouritesService.remove(new QueryWrapper<UserFavourites>().eq("favourites_id",userFavourites.getFavouritesId()));
         return Result.succ(200,"删除成功",null);
     }
     @ApiOperation(value="修改商品收藏")
     @PostMapping("/modify")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result modifyUserFavourites(@Validated @RequestBody UserFavourites userFavourites){
         Product product=productService.getById(userFavourites.getProductId());
         if(product==null)
@@ -77,10 +82,16 @@ public class UserFavouritesController {
         userFavouritesService.updateById(userFavourites);
         return Result.succ(200,"修改成功",userFavourites);
     }
-    @ApiOperation(value="返回所有商品收藏")
+    @ApiOperation(value="返回用户所有商品收藏")
     @GetMapping("/list")
+    @RequiresAuthentication
+    @CrossOrigin
     public Result listUserFavourites(){
-        List<UserFavourites> userFavouritesList=userFavouritesService.list();
+        List<UserFavourites> userFavouritesList=userFavouritesService.list(new QueryWrapper<UserFavourites>()
+                .eq("user_id",ShiroUtils.getProfile().getUserId()));
+        if(userFavouritesList == null){
+            return Result.succ(200,"返回成功",null);
+        }
         return Result.succ(200,"返回成功",userFavouritesList);
     }
 
