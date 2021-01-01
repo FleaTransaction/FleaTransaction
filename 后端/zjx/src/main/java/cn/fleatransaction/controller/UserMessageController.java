@@ -9,6 +9,7 @@ import cn.fleatransaction.service.ILabelService;
 import cn.fleatransaction.service.IProductService;
 import cn.fleatransaction.service.IUserMessageService;
 import cn.fleatransaction.service.IUserService;
+import cn.fleatransaction.util.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,15 +48,19 @@ public class UserMessageController {
     @RequiresAuthentication
     @CrossOrigin
     public Result addUserMessage(@Validated @RequestBody UserMessage userMessage){
-       User user=userService.getById(userMessage.getUserId());
+       userMessage.setUserId(ShiroUtils.getProfile().getUserId());
+        User user=userService.getById(userMessage.getUserId());
        if(user==null)
            return Result.fail("该用户不存在，添加失败");
         Product product=productService.getById(userMessage.getProductId());
        if(product==null)
            return Result.fail("该产品不存在，添加失败");
 
-       userMessageService.save(userMessage);
-        return Result.succ(200,"添加成功",userMessage);
+       if(userMessageService.save(userMessage)) {
+           return Result.succ(200, "添加成功", userMessage);
+       }else{
+           return Result.fail("添加失败");
+       }
     }
 
 
@@ -64,8 +69,10 @@ public class UserMessageController {
     @RequiresAuthentication
     @CrossOrigin
     public Result removeUserMessage(int messageId){
-        userMessageService.removeById(messageId);
-        return Result.succ(200,"删除成功",null);
+        if(userMessageService.removeById(messageId)) {
+            return Result.succ(200, "删除成功", null);
+        }
+        return Result.fail("删除失败");
     }
 
     @ApiOperation(value="修改留言")
@@ -73,8 +80,11 @@ public class UserMessageController {
     @RequiresAuthentication
     @CrossOrigin
     public Result modifyUserMessage(@Validated @RequestBody UserMessage userMessage){
-        userMessageService.updateById(userMessage);
-        return Result.succ(200,"修改成功",userMessage);
+        userMessage.setUserId(ShiroUtils.getProfile().getUserId());
+        if(userMessageService.updateById(userMessage)) {
+            return Result.succ(200, "修改成功", userMessage);
+        }
+        return Result.fail("修改失败");
     }
     @ApiOperation(value="返回所有留言")
     @GetMapping("/list")

@@ -68,6 +68,7 @@ public class ProDemandController {
     @RequiresAuthentication
     @CrossOrigin
     public Result modifyProDemand(@Validated @RequestBody ProDemand proDemand){
+        proDemand.setUserId(ShiroUtils.getProfile().getUserId());
         if(proDemandService.updateById(proDemand)) {
             return Result.succ(200, "修改成功", proDemand);
         }

@@ -27,7 +27,8 @@ import java.util.UUID;
 @Api(tags = "用户接口")
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class
+UserController {
 
     @Autowired
     IUserService userService;
@@ -62,7 +63,8 @@ public class UserController {
 
     @ApiOperation(value = "获取用户数量")
     @GetMapping("/count")
-    //@RequiresAuthentication
+    @RequiresAuthentication
+    @CrossOrigin
     public Result count(){
         int count=userService.count();
         return Result.succ(200,"获取成功",count);

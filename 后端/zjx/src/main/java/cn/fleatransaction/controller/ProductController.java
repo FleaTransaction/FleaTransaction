@@ -141,7 +141,7 @@ public class ProductController {
     @GetMapping("/remove")
     @RequiresAuthentication
     @CrossOrigin
-    public Result remove(String productId){
+    public Result remove(int productId){
         productService.remove(new QueryWrapper<Product>().eq("product_id",productId));
         Product product = productService.getById(productId);
         if(product == null) {
@@ -156,6 +156,7 @@ public class ProductController {
     @RequiresAuthentication
     @CrossOrigin
     public Result modify(@Validated @RequestBody Product product){
+        product.setUserId(ShiroUtils.getProfile().getUserId());
         if(productService.updateById(product)) {
             return Result.succ(200, "修改成功", product);
         }

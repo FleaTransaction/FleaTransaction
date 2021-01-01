@@ -81,8 +81,12 @@ public class OrderController {
         if(product==null)
             return Result.fail(400,"该商品不存在，订单添加失败",null);
 
-        userOrderService.save(userOrder);
-        return Result.succ(200,"添加成功",userOrder);
+        userOrder.setUserId(ShiroUtils.getProfile().getUserId());
+        if(userOrderService.save(userOrder)) {
+            return Result.succ(200, "添加成功", userOrder);
+        }else{
+            return Result.fail("添加失败");
+        }
     }
 
     @ApiOperation(value="删除订单")
@@ -90,8 +94,12 @@ public class OrderController {
     @RequiresAuthentication
     @CrossOrigin
     public Result remove(int orderId){
-        userOrderService.remove(new QueryWrapper<UserOrder>().eq("order_id",orderId));
-        return Result.succ(200,"删除成功",null);
+        if(userOrderService.remove(new QueryWrapper<UserOrder>().eq("order_id",orderId))) {
+            return Result.succ(200, "删除成功", null);
+        }
+        else{
+            return Result.fail("删除失败");
+        }
     }
 
     @ApiOperation(value="修改订单")
@@ -105,8 +113,13 @@ public class OrderController {
         Product product= productService.getOne(new QueryWrapper<Product>().eq("product_id",userOrder.getProductId()));
         if(product==null)
             return Result.fail(400,"该商品不存在，订单修改失败",null);
-        userOrderService.updateById(userOrder);
-        return Result.succ(200,"修改成功",userOrder);
+        userOrder.setUserId(ShiroUtils.getProfile().getUserId());
+        if(userOrderService.updateById(userOrder)) {
+            return Result.succ(200, "修改成功", userOrder);
+        }
+        else{
+            return Result.fail("修改失败");
+        }
     }
 
 }

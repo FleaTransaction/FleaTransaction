@@ -35,7 +35,7 @@ public class ProductLabelController {
 
     @ApiOperation(value="查询产品对应标签")
     @GetMapping("/query")
-    public Result queryProductLabel(String productId){
+    public Result queryProductLabel(int productId){
         ProductLabel productLabel=productLabelService.getOne(new QueryWrapper<ProductLabel>().eq("product_id",productId));
         return Result.succ(200,"查询成功",productLabel);
     }

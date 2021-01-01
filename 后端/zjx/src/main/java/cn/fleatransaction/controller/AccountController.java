@@ -113,8 +113,9 @@ public class AccountController {
         User user1 = userService.getOne(new QueryWrapper<User>().eq("user_email", registerDto.getUseremail()));
         if(user1!=null)
             return Result.fail("邮箱已被注册");
-        User user2=userService.registerUser(registerDto.getUserphone(),registerDto.getPassword(), registerDto.getUseremail());
 
+        User user2=userService.registerUser(registerDto.getUserphone(),registerDto.getPassword(), registerDto.getUseremail());
+        //User temp = new User();
         user = userService.getOne(new QueryWrapper<User>().eq("user_phone", registerDto.getUserphone()));
 
         String jwt = jwtUtils.generateToken(user.getUserId());

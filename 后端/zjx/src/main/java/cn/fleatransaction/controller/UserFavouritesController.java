@@ -53,6 +53,7 @@ public class UserFavouritesController {
     @RequiresAuthentication
     @CrossOrigin
     public Result addUserFavourites(@Validated @RequestBody UserFavourites userFavourites){
+        userFavourites.setUserId(ShiroUtils.getProfile().getUserId());
         User user=userService.getById(userFavourites.getUserId());
         if(user==null)
             return Result.fail("用户不存在，添加失败");
@@ -68,19 +69,29 @@ public class UserFavouritesController {
     @RequiresAuthentication
     @CrossOrigin
     public Result removeUserFavourites(@RequestBody UserFavourites userFavourites){
-        userFavouritesService.remove(new QueryWrapper<UserFavourites>().eq("favourites_id",userFavourites.getFavouritesId()));
-        return Result.succ(200,"删除成功",null);
+        if(userFavouritesService.remove(new QueryWrapper<UserFavourites>()
+                .eq("favourites_id",userFavourites.getFavouritesId()))) {
+            return Result.succ(200, "删除成功", null);
+        }
+        else{
+            return Result.fail("删除失败");
+        }
     }
     @ApiOperation(value="修改商品收藏")
     @PostMapping("/modify")
     @RequiresAuthentication
     @CrossOrigin
     public Result modifyUserFavourites(@Validated @RequestBody UserFavourites userFavourites){
+        userFavourites.setUserId(ShiroUtils.getProfile().getUserId());
         Product product=productService.getById(userFavourites.getProductId());
         if(product==null)
             return Result.fail("商品不存在，修改失败");
-        userFavouritesService.updateById(userFavourites);
-        return Result.succ(200,"修改成功",userFavourites);
+        if(userFavouritesService.updateById(userFavourites)) {
+            return Result.succ(200, "修改成功", userFavourites);
+        }
+        else{
+            return Result.fail("修改失败");
+        }
     }
     @ApiOperation(value="返回用户所有商品收藏")
     @GetMapping("/list")
