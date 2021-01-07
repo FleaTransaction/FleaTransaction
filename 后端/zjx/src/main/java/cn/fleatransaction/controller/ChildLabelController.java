@@ -25,7 +25,7 @@ public class ChildLabelController {
 
     @ApiOperation(value="查询子标签")
     @GetMapping("/query")
-    public Result queryChildLabel(int childLabelId){
+    public Result queryChildLabel(@RequestParam("childlabelid") int childLabelId){
         ChildLabel childLabel=childLabelService.getOne(new QueryWrapper<ChildLabel>().eq("child_label_id",childLabelId));
         if(childLabel != null) {
             return Result.succ(200, "查询成功", childLabel);

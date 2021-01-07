@@ -12,6 +12,10 @@ public class Result implements Serializable {
     private String msg;
     private Object data;
 
+    public static Result succ(String msg){
+        return succ(200,msg,null);
+    }
+
     public static Result succ(Object data) {
 
         return succ(200,"操作成功" , data);

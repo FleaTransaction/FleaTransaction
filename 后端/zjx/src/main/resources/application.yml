@@ -12,6 +12,7 @@ shiro-redis:
     enabled: true
     redis-manager:
         host: 47.110.243.78:6379
+        password: 199921y
 spring:
     datasource:
         password: 123456

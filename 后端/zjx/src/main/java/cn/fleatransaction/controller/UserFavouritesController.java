@@ -35,17 +35,16 @@ public class UserFavouritesController {
     @Autowired
     IProductService productService;
 
-    @ApiOperation(value="查询用户个人的商品收藏")
-    @GetMapping("/query")
+    @ApiOperation(value="判断商品是否被收藏")
+    @GetMapping("/isfavourites")
     @RequiresAuthentication
     @CrossOrigin
-    public Result queryUserFavourites(){
-        int userId = ShiroUtils.getProfile().getUserId();
-        List<UserFavourites> userFavouritesList=userFavouritesService.list(new QueryWrapper<UserFavourites>().eq("user_id",userId));
-        if(userFavouritesList != null) {
-            return Result.succ(200, "查询成功", userFavouritesList);
+    public Result isFavourites(@RequestParam("productid")int productid){
+        UserFavourites userFavourites = userFavouritesService.getOne(new QueryWrapper<UserFavourites>().eq("product_id",productid));
+        if(ShiroUtils.getProfile().getUserId() == userFavourites.getUserId()){
+            return Result.succ(200,"该商品已被用户收藏",userFavourites);
         }
-        return Result.fail("查询失败");
+        return Result.succ("该商品没有被此用户收藏");
     }
 
     @ApiOperation(value="添加商品收藏")
@@ -64,6 +63,8 @@ public class UserFavouritesController {
        userFavouritesService.save(userFavourites);
         return Result.succ(200,"添加成功",userFavourites);
     }
+
+
     @ApiOperation(value="删除商品收藏")
     @GetMapping("/remove")
     @RequiresAuthentication
