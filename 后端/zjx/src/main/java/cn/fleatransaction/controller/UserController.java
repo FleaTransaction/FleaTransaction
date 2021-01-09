@@ -105,8 +105,9 @@ UserController {
         try {
             // 构建真实的文件路径
             File newFile = new File(url + File.separator + filename);
-            System.err.println(newFile.getAbsolutePath());
-            String urlava = newFile.getAbsolutePath();
+            //System.err.println(newFile.getAbsolutePath());
+            String te = "http://47.110.243.78:8080/images/product/";
+            String urlava = te + filename;
             // 上传图片到 -》 “绝对路径”
             imgfile.transferTo(newFile);
             User u = new User();

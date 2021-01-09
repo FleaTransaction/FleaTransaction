@@ -115,7 +115,7 @@ public class ProductController {
                 String url = fileDir.getAbsolutePath();
                 try {
                     // 构建真实的文件路径
-                    String te = "http://47.110.243.78:8080/images/avatar/";
+                    String te = "http://47.110.243.78:8080/images/product/";
                     File newFile = new File(url + File.separator + filename);
                     //System.err.println(newFile.getAbsolutePath());
                     String urlpic = te + filename;
