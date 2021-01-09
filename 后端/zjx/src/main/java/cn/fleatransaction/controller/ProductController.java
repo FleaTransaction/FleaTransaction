@@ -1,12 +1,9 @@
 package cn.fleatransaction.controller;
 
+import cn.fleatransaction.common.Dot.productDto;
 import cn.fleatransaction.common.lang.Result;
-import cn.fleatransaction.entity.Product;
-import cn.fleatransaction.entity.ProductPic;
-import cn.fleatransaction.entity.User;
-import cn.fleatransaction.service.IProductPicService;
-import cn.fleatransaction.service.IProductService;
-import cn.fleatransaction.service.IUserService;
+import cn.fleatransaction.entity.*;
+import cn.fleatransaction.service.*;
 import cn.fleatransaction.util.ShiroUtils;
 import cn.fleatransaction.util.UploadUtils;
 import cn.hutool.core.map.MapUtil;
@@ -40,6 +37,12 @@ public class ProductController {
 
     @Autowired
     IProductPicService productPicService;
+
+    @Autowired
+    IProductLabelService productLabelService;
+
+    @Autowired
+    IChildLabelService childLabelService;
 
     @ApiOperation(value="查询产品")
     @GetMapping("/query")
@@ -86,6 +89,7 @@ public class ProductController {
                       @RequestParam("productprice") Float productprice,
                       @RequestParam("productdescription") String productdescription,
                       @RequestParam("imgfile") MultipartFile[] imgfile,
+                      @RequestParam("productlabel") String productlabel,
                       @RequestParam(value = "productphone",required = true,defaultValue = "null") String productphone,
                       @RequestParam(value = "productwechat",required = true,defaultValue = "null") String productwechat,
                       @RequestParam(value = "productqq",required = true,defaultValue = "null") String productqq) {
@@ -134,9 +138,16 @@ public class ProductController {
                     return Result.fail("上传异常: " + e.getMessage());
                 }
             }
-            Object temp = productService.getProductInfoById(product.getProductId());
-            return Result.succ(200, "添加成功", temp);
         }
+        ChildLabel childLabel = childLabelService.getOne(new QueryWrapper<ChildLabel>().eq("child_label_name",productlabel));
+        ProductLabel pl = new ProductLabel();
+        pl.setChildLabelId(childLabel.getChildLabelId());
+        pl.setProductId(product.getProductId());
+        if(!productLabelService.save(pl)){
+            return Result.fail("标签新增失败!");
+        }
+        Object temp = productService.getProductInfoById(product.getProductId());
+        return Result.succ(200, "添加成功", temp);
     }
 
     @ApiOperation(value="删除商品")
@@ -144,6 +155,13 @@ public class ProductController {
     @RequiresAuthentication
     @CrossOrigin
     public Result remove(int productId){
+        ProductLabel productLabel = productLabelService.getOne(new QueryWrapper<ProductLabel>().eq("product_id",productId));
+        if(productLabel!= null){
+            productLabelService.removeById(productLabel.getProductLabelId());
+        }
+        if(productPicService.getById(productId)!=null){
+            productPicService.removeById(productId);
+        }
         productService.remove(new QueryWrapper<Product>().eq("product_id",productId));
         Product product = productService.getById(productId);
         if(product == null) {
