@@ -77,7 +77,8 @@ UserController {
     public Result save(@Validated @RequestBody User user){
         user.setUserId(ShiroUtils.getProfile().getUserId());
         if(userService.updateById(user)) {
-            return Result.succ(200, "修改成功", user);
+            User temp = userService.getById(user.getUserId());
+            return Result.succ(200, "修改成功", temp);
         }
         return Result.fail("修改失败!");
     }

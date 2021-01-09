@@ -115,9 +115,11 @@ public class ProductController {
                 String url = fileDir.getAbsolutePath();
                 try {
                     // 构建真实的文件路径
+                    String te = "http://47.110.243.78:8080/images/avatar/";
                     File newFile = new File(url + File.separator + filename);
                     //System.err.println(newFile.getAbsolutePath());
-                    String urlpic = newFile.getAbsolutePath();
+                    String urlpic = te + filename;
+                    System.out.println(urlpic);
                     // 上传图片到 -》 “绝对路径”
                     multipartFile.transferTo(newFile);
                     ProductPic productpic = new ProductPic();
@@ -158,7 +160,8 @@ public class ProductController {
     public Result modify(@Validated @RequestBody Product product){
         product.setUserId(ShiroUtils.getProfile().getUserId());
         if(productService.updateById(product)) {
-            return Result.succ(200, "修改成功", product);
+            Product temp = productService.getById(product.getProductId());
+            return Result.succ(200, "修改成功", temp);
         }
         return Result.fail("修改失败，稍后再试!");
     }

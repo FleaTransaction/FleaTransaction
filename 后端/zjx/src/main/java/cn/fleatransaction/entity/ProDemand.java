@@ -24,7 +24,7 @@ public class ProDemand {
     @NotBlank(message = "需求描述不能为空")
     private String demandDescription;
 
-    @NotBlank(message = "需求价格不能为空")
+    //@NotBlank(message = "需求价格不能为空")
     private double demandPrice;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
