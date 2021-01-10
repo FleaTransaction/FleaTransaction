@@ -33,6 +33,20 @@ public class ProDemandController {
         }
         return Result.succ(200,"查询成功",proDemand);
     }
+
+    @ApiOperation(value="用户需求")
+    @GetMapping("/userdemand")
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result userdemand(){
+        List<ProDemand> proDemand=proDemandService.list(new QueryWrapper<ProDemand>()
+                .eq("user_id",ShiroUtils.getProfile().getUserId()));
+        if(proDemand == null){
+            return Result.fail("暂无该需求");
+        }
+        return Result.succ(200,"查询成功",proDemand);
+    }
+
     @ApiOperation(value="根据产品名查询")
     @GetMapping("/queryDemand")
     public Result queryProDemandByName(String demandName){
@@ -53,6 +67,7 @@ public class ProDemandController {
        }
        return Result.fail("添加失败");
     }
+
     @ApiOperation(value="删除需求")
     @GetMapping("/remove")
     @RequiresAuthentication
@@ -63,6 +78,7 @@ public class ProDemandController {
         }
         return Result.fail("删除失败");
     }
+
     @ApiOperation(value="修改需求")
     @PostMapping("/modify")
     @RequiresAuthentication
@@ -74,6 +90,7 @@ public class ProDemandController {
         }
         return Result.fail("修改失败！");
     }
+
     @ApiOperation(value="返回所有需求")
     @GetMapping("/list")
     public Result listProDemand(){

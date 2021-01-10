@@ -4,12 +4,21 @@ import cn.fleatransaction.common.Dot.labelDto;
 import cn.fleatransaction.common.Dot.messageDto;
 import cn.fleatransaction.common.Dot.productDto;
 import cn.fleatransaction.common.lang.Result;
+import cn.fleatransaction.entity.ChildLabel;
+import cn.fleatransaction.entity.Label;
+import cn.fleatransaction.entity.ProductLabel;
+import cn.fleatransaction.service.IChildLabelService;
+import cn.fleatransaction.service.ILabelService;
+import cn.fleatransaction.service.IProductLabelService;
 import cn.fleatransaction.service.IProductService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryChainWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -23,6 +32,15 @@ public class Controller {
 
     @Autowired
     IProductService productService;
+
+    @Autowired
+    IChildLabelService childLabelService;
+
+    @Autowired
+    IProductLabelService productLabelService;
+
+    @Autowired
+    ILabelService labelService;
 
 
     @ApiOperation(value="返回标签及对应子标签")
@@ -43,6 +61,7 @@ public class Controller {
         }
         return cn.fleatransaction.common.lang.Result.succ(200,"返回成功",labelDtoList);
     }
+
     @ApiOperation(value="返回商品信息")
     @GetMapping("/productList")
     Result listProductInfo(){
@@ -52,6 +71,7 @@ public class Controller {
         }
         return Result.succ(200,"返回成功",productDtoList);
     }
+
     @ApiOperation(value="返回指定标签的商品信息")
     @GetMapping("/queryProduct")
     Result queryProductInfo(String labelName,String childLabelName){
@@ -60,6 +80,53 @@ public class Controller {
             return Result.succ(200,"返回成功,暂无商品",null);
         }
         return Result.succ(200,"返回成功",productDtoList);
+    }
+
+    @ApiOperation(value = "返回该子标签下的商品")
+    @GetMapping("/queryProductByChildLabel")
+    Result queryByChildLable(@RequestParam("childlabel") String childlabel){
+        List<productDto> product = new ArrayList<>();
+        List<ChildLabel> childlabels = childLabelService.list(new QueryWrapper<ChildLabel>()
+                .eq("child_label_name",childlabel));
+        if(childlabels == null){
+            return Result.fail("没有该子标签");
+        }
+        for(ChildLabel temp : childlabels){
+            List<ProductLabel> productLabels = productLabelService.list(new QueryWrapper<ProductLabel>()
+                    .eq("child_label_id",temp.getChildLabelId()));
+            for(ProductLabel t : productLabels) {
+                List<productDto> productDto = productService.getProductInfoById(t.getProductId());
+                for(productDto te : productDto){
+                    product.add(te);
+                }
+            }
+        }
+
+        return Result.succ(product);
+    }
+
+    @ApiOperation(value = "返回该父标签下的商品")
+    @GetMapping("/queryProductByLabel")
+    Result queryProductByLabel(@RequestParam("label") String label){
+        List<productDto> product = new ArrayList<>();
+        Label label1 = labelService.getOne(new QueryWrapper<Label>().eq("label_name",label));
+        if(label1 == null){
+            Result.fail("没有该标签");
+        }
+        List<ChildLabel> childlabels = childLabelService.list(new QueryWrapper<ChildLabel>()
+                .eq("label_id",label1.getLabelId()));
+        for(ChildLabel temp : childlabels){
+            List<ProductLabel> productLabels = productLabelService.list(new QueryWrapper<ProductLabel>()
+                    .eq("child_label_id",temp.getChildLabelId()));
+            for(ProductLabel t : productLabels) {
+                List<productDto> productDto = productService.getProductInfoById(t.getProductId());
+                for(productDto te : productDto){
+                    product.add(te);
+                }
+            }
+        }
+
+        return Result.succ(product);
     }
 
     @ApiOperation(value="返回指定ID的商品信息")

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
-public class productDto implements Serializable {
+public class productUpdate implements Serializable {
     private int productId;
 
     private int userId;
@@ -28,4 +28,8 @@ public class productDto implements Serializable {
     private String productQq;
 
     private String productWeChat;
+
+    private String labelname;
+
+    private String childlabel;
 }

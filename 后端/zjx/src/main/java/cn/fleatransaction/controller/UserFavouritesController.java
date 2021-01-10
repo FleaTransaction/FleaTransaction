@@ -40,9 +40,12 @@ public class UserFavouritesController {
     @RequiresAuthentication
     @CrossOrigin
     public Result isFavourites(@RequestParam("productid")int productid){
-        UserFavourites userFavourites = userFavouritesService.getOne(new QueryWrapper<UserFavourites>().eq("product_id",productid));
-        if(ShiroUtils.getProfile().getUserId() == userFavourites.getUserId()){
-            return Result.succ(200,"该商品已被用户收藏",userFavourites);
+        UserFavourites userFavourites = userFavouritesService.getOne(new QueryWrapper<UserFavourites>()
+                .eq("product_id",productid));
+        if(userFavourites != null){
+            if(ShiroUtils.getProfile().getUserId() == userFavourites.getUserId()){
+                return Result.succ(200,"该商品已被用户收藏",userFavourites);
+            }
         }
         return Result.succ("该商品没有被此用户收藏");
     }
@@ -69,9 +72,8 @@ public class UserFavouritesController {
     @GetMapping("/remove")
     @RequiresAuthentication
     @CrossOrigin
-    public Result removeUserFavourites(@RequestBody UserFavourites userFavourites){
-        if(userFavouritesService.remove(new QueryWrapper<UserFavourites>()
-                .eq("favourites_id",userFavourites.getFavouritesId()))) {
+    public Result removeUserFavourites(@RequestParam("favouritesid") int favouritesid){
+        if(userFavouritesService.removeById(favouritesid)) {
             return Result.succ(200, "删除成功", null);
         }
         else{
