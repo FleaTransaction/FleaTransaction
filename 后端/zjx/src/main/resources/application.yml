@@ -7,14 +7,15 @@ mybatis-plus:
     config-location: classpath:/mybatis-config.xml
     mapper-locations: classpath:/cn/fleatransaction/mapper/*.xml
 server:
-    port: 8888
+    port: 8082
 shiro-redis:
     enabled: true
     redis-manager:
-        host: 127.0.0.1:6379
+        host: 47.110.243.78:6379
+        password: 199921y
 spring:
     datasource:
-        password: root
+        password: 123456
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3306/flea?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-        username: root
+        url: jdbc:mysql://47.110.243.78:3306/flea?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+        username: qwe

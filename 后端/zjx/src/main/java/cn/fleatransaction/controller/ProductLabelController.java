@@ -1,14 +1,9 @@
 package cn.fleatransaction.controller;
 
+import cn.fleatransaction.common.Dot.labelnameDto;
 import cn.fleatransaction.common.lang.Result;
-import cn.fleatransaction.entity.ChildLabel;
-import cn.fleatransaction.entity.ProDemand;
-import cn.fleatransaction.entity.Product;
-import cn.fleatransaction.entity.ProductLabel;
-import cn.fleatransaction.service.IChildLabelService;
-import cn.fleatransaction.service.IProDemandService;
-import cn.fleatransaction.service.IProductLabelService;
-import cn.fleatransaction.service.IProductService;
+import cn.fleatransaction.entity.*;
+import cn.fleatransaction.service.*;
 import cn.fleatransaction.service.impl.ProductLabelService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
@@ -33,11 +28,22 @@ public class ProductLabelController {
     @Autowired
     IProductService productService;
 
+    @Autowired
+    ILabelService labelService;
+
     @ApiOperation(value="查询产品对应标签")
     @GetMapping("/query")
     public Result queryProductLabel(int productId){
+        labelnameDto labelnameDto = new labelnameDto();
         ProductLabel productLabel=productLabelService.getOne(new QueryWrapper<ProductLabel>().eq("product_id",productId));
-        return Result.succ(200,"查询成功",productLabel);
+        if(productLabel == null){
+            return Result.fail("该商品暂未添加商品");
+        }
+        ChildLabel childLabel = childLabelService.getById(productLabel.getChildLabelId());
+        Label label = labelService.getById(childLabel.getLabelId());
+        labelnameDto.setLabelName(label.getLabelName());
+        labelnameDto.setChildLabelName(childLabel.getChildLabelName());
+        return Result.succ(200,"查询成功",labelnameDto);
     }
     @ApiOperation(value="添加产品对应标签")
     @PostMapping("/add")

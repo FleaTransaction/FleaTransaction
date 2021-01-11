@@ -107,20 +107,17 @@ public class ProductController {
                       @RequestParam(value = "productqq",required = true,defaultValue = "null") String productqq) {
         Product product = new Product();
         product.setUserId(ShiroUtils.getProfile().getUserId());
-        User user = userService.findUser(ShiroUtils.getProfile().getUserId());
-        if(productphone.equals("null")){
-            product.setProductPhone(user.getUserPhone());
-        }
+        product.setProductPhone(productphone);
         product.setProductName(productname);
         product.setProductPrice(productprice);
         product.setProductDescription(productdescription);
         product.setProductWeChat(productwechat);
         product.setProductQq(productqq);
-        productService.saveProduct(product);
         int count = imgfile.length;
         if (count <= 0) {
             return Result.fail("上传文件不能为空！");
         } else {
+            productService.saveProduct(product);
             for (MultipartFile multipartFile : imgfile) {
                 String filename = multipartFile.getOriginalFilename();
                 String prefix = filename.substring(filename.lastIndexOf(".") + 1);
@@ -208,18 +205,19 @@ public class ProductController {
     }
 
     @ApiOperation(value="修改商品")
-    @PostMapping("/modify")
+    @PostMapping("/modifybyparm")
     @RequiresAuthentication
     @CrossOrigin
     public Result modify(@RequestParam("productid") int productid,
                          @RequestParam("productname") String productname,
                          @RequestParam("productprice") Float productprice,
                          @RequestParam("productdescription") String productdescription,
-                         @RequestParam("imgfile") MultipartFile[] imgfile,
+                         @RequestParam(value = "imgfile",required = false) MultipartFile[] imgfile,
                          @RequestParam("productlabel") String productlabel,
                          @RequestParam(value = "productphone",required = true,defaultValue = "null") String productphone,
                          @RequestParam(value = "productwechat",required = true,defaultValue = "null") String productwechat,
-                         @RequestParam(value = "productqq",required = true,defaultValue = "null") String productqq){
+                         @RequestParam(value = "productqq",required = true,defaultValue = "null") String productqq,
+                         @RequestParam(value = "picurl") String[] picurl){
 
         Product product = new Product();
         product.setUserId(ShiroUtils.getProfile().getUserId());
@@ -233,9 +231,6 @@ public class ProductController {
         product.setProductDescription(productdescription);
         product.setProductWeChat(productwechat);
         product.setProductQq(productqq);
-        if(!productService.updateById(product)){
-            return Result.fail("产品修改失败");
-        }
         ChildLabel childLabel = childLabelService.getOne(new QueryWrapper<ChildLabel>().eq("child_label_name",productlabel));
         ProductLabel pl = new ProductLabel();
         pl.setChildLabelId(childLabel.getChildLabelId());
@@ -244,14 +239,32 @@ public class ProductController {
                 .eq("product_id",productid))){
             return Result.fail("标签修改失败!");
         }
-        if(!productPicService.remove(new QueryWrapper<ProductPic>()
-                .eq("product_id",productid))){
-            return Result.fail("图片修改失败");
+
+        List<ProductPic> productPic = productPicService.list(new QueryWrapper<ProductPic>()
+                .eq("product_id",productid));
+
+        List<String> tm =new ArrayList<String>();
+        for(ProductPic pic : productPic){
+            int flag = 0;
+            for(String t : picurl){
+                if(pic.getProductPicture().equals(t)){
+                    flag = 1;
+                }
+            }
+            if(flag == 0){
+                tm.add(pic.getProductPicture());
+            }
         }
+
+        for(String tp : tm){
+            if(!productPicService.remove(new QueryWrapper<ProductPic>()
+                    .eq("product_picture",tp))){
+                return Result.fail("图片修改失败");
+            }
+        }
+
         int count = imgfile.length;
-        if (count <= 0) {
-            return Result.fail("上传文件不能为空！");
-        } else {
+        if (count > 0) {
             for (MultipartFile multipartFile : imgfile) {
                 String filename = multipartFile.getOriginalFilename();
                 String prefix = filename.substring(filename.lastIndexOf(".") + 1);
@@ -285,6 +298,10 @@ public class ProductController {
             }
         }
 
+        if(!productService.updateById(product)){
+            return Result.fail("产品修改失败");
+        }
+
         List<productUpdate> productUpdate = new ArrayList<>();
         List<productDto> te = productService.getProductInfoById(product.getProductId());
         for(productDto t : te){
@@ -309,5 +326,17 @@ public class ProductController {
         return Result.succ(productUpdate);
     }
 
+    @ApiOperation(value="修改商品浏览")
+    @PostMapping("/modify")
+    @RequiresAuthentication
+    @CrossOrigin
+    public Result modify(@Validated @RequestBody Product product) {
+        product.setUserId(ShiroUtils.getProfile().getUserId());
+        if (productService.updateById(product)) {
+            Product temp = productService.getById(product.getProductId());
+            return Result.succ(200, "修改成功", temp);
+        }
+        return Result.fail("修改失败，稍后再试!");
+    }
 
 }
