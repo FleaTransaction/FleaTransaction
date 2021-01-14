@@ -271,7 +271,7 @@ public class ProductController {
             }
         }
 
-        productService.saveProduct(product1);
+        productService.updateById(product1);
 
         OneProductDto productDtoList=productService.getProductInfoById(product1.getProductId());
         if(productDtoList == null){

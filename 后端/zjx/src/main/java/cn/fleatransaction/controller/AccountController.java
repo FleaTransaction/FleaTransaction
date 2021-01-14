@@ -117,6 +117,7 @@ public class AccountController {
         User user2=userService.registerUser(registerDto.getUserphone(),registerDto.getPassword(), registerDto.getUseremail());
         //User temp = new User();
         user = userService.getOne(new QueryWrapper<User>().eq("user_phone", registerDto.getUserphone()));
+        user.setUserName("我是一只小跳蚤");
         user.setUserAvatar("http://47.110.243.78:8080/images/avatar/aaaaa.jpg");
         userService.updateById(user);
 
