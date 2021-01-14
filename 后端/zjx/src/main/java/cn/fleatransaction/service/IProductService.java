@@ -2,6 +2,7 @@ package cn.fleatransaction.service;
 
 
 
+import cn.fleatransaction.common.Dot.OneProductDto;
 import cn.fleatransaction.common.Dot.labelDto;
 import cn.fleatransaction.common.Dot.messageDto;
 import cn.fleatransaction.common.Dot.productDto;
@@ -22,7 +23,9 @@ public interface IProductService extends IService<Product> {
 
      List<productDto> queryProductInfo(String labelName,String ChildLabelName);
 
-     List<productDto> getProductInfoById(int productId);
+     OneProductDto getProductInfoById(int productId);
+
+     //productDto getProductDto(int productId);
 
      List<messageDto> getMessageById(int productId);
 

@@ -5,9 +5,10 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
-public class productDto implements Serializable {
+public class OneProductDto implements Serializable {
     private int productId;
 
     private int userId;
@@ -21,7 +22,7 @@ public class productDto implements Serializable {
     @JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Timestamp productTime;
 
-    private String productPicture;
+    private List<String> productPicture;
 
     private String productPhone;
 

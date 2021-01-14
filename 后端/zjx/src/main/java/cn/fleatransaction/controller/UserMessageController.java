@@ -49,7 +49,7 @@ public class UserMessageController {
     @CrossOrigin
     public Result addUserMessage(@Validated @RequestBody UserMessage userMessage){
        userMessage.setUserId(ShiroUtils.getProfile().getUserId());
-        User user=userService.getById(userMessage.getUserId());
+       User user=userService.getById(userMessage.getUserId());
        if(user==null)
            return Result.fail("该用户不存在，添加失败");
         Product product=productService.getById(userMessage.getProductId());

@@ -38,4 +38,9 @@ public class Product {
     private String productWeChat;
 
     private int productCount;
+
+//    @Override
+//    public int compareTo(Product ob) {
+//        return this.productCount.compareTo(ob.getProductCount());
+//    }
 }

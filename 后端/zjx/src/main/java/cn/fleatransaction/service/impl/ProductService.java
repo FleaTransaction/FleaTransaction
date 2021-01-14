@@ -3,6 +3,7 @@ package cn.fleatransaction.service.impl;
 
 
 
+import cn.fleatransaction.common.Dot.OneProductDto;
 import cn.fleatransaction.common.Dot.labelDto;
 import cn.fleatransaction.common.Dot.messageDto;
 import cn.fleatransaction.common.Dot.productDto;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,9 +45,30 @@ public class ProductService extends ServiceImpl<ProductMapper, Product> implemen
     }
 
     @Override
-    public List<productDto> getProductInfoById(int productId) {
-        return productMapper.getProductInfoById(productId);
+    public OneProductDto getProductInfoById(int productId) {
+        List<productDto> productDtos = productMapper.getProductInfoById(productId);
+        OneProductDto t = new OneProductDto();
+        t.setProductPicture(new ArrayList<>());
+        for(productDto temp : productDtos){
+            t.getProductPicture().add(temp.getProductPicture());
+            t.setProductCount(temp.getProductCount());
+            t.setProductDescription(temp.getProductDescription());
+            t.setProductId(temp.getProductId());
+            t.setUserId(temp.getUserId());
+            t.setProductName(temp.getProductName());
+            t.setProductPhone(temp.getProductPhone());
+            t.setProductPrice(temp.getProductPrice());
+            t.setProductQq(temp.getProductQq());
+            t.setProductTime(temp.getProductTime());
+            t.setProductWeChat(temp.getProductWeChat());
+        }
+        return t;
     }
+
+    /*@Override
+    public productDto getProductDto(int productId) {
+        return productMapper.getProductDto(productId);
+    }*/
 
     @Override
     public List<messageDto> getMessageById(int productId) {

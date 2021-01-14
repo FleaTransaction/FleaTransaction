@@ -117,6 +117,8 @@ public class AccountController {
         User user2=userService.registerUser(registerDto.getUserphone(),registerDto.getPassword(), registerDto.getUseremail());
         //User temp = new User();
         user = userService.getOne(new QueryWrapper<User>().eq("user_phone", registerDto.getUserphone()));
+        user.setUserAvatar("http://47.110.243.78:8080/images/avatar/aaaaa.jpg");
+        userService.updateById(user);
 
         String jwt = jwtUtils.generateToken(user.getUserId());
         httpServletResponse.setHeader("Authorization",jwt);
@@ -127,6 +129,7 @@ public class AccountController {
                 .put("userid",user.getUserId())
                 .put("userphone",user.getUserPhone())
                 .put("userEmail",user.getUserEmail())
+                .put("userAvatar",user.getUserAvatar())
                 .map()
         );
     }

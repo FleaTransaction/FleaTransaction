@@ -5,6 +5,7 @@ import cn.fleatransaction.entity.ChildLabel;
 import cn.fleatransaction.entity.ProDemand;
 import cn.fleatransaction.service.IChildLabelService;
 import cn.fleatransaction.service.IProDemandService;
+import cn.fleatransaction.util.ListUtils;
 import cn.fleatransaction.util.ShiroUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
@@ -14,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @Api(tags="需求接口")
 @RestController
@@ -24,6 +29,9 @@ public class ProDemandController {
     @Autowired
     IProDemandService proDemandService;
 
+    @Autowired
+    ListUtils listUtils;
+
     @ApiOperation(value="查询需求")
     @GetMapping("/query")
     public Result queryProDemand(int demandId){
@@ -32,6 +40,35 @@ public class ProDemandController {
             return Result.fail("暂无该需求");
         }
         return Result.succ(200,"查询成功",proDemand);
+    }
+
+    @ApiOperation(value = "根据求购标题和描述进行查询")
+    @GetMapping("/queryByName")
+    public Result queryByName(@RequestParam("demand") String demand){
+        List<ProDemand> proDemands = new ArrayList<>();
+
+        List<ProDemand> demandName = proDemandService.list(new QueryWrapper<ProDemand>()
+                .like("demand_name",demand));
+        if(demandName != null){
+            proDemands.addAll(demandName);
+        }
+
+        List<ProDemand> demandDescription = proDemandService.list(new QueryWrapper<ProDemand>()
+                .like("demand_description",demand));
+        if(demandDescription!=null){
+            proDemands.addAll(demandDescription);
+        }
+
+        //List<ProDemand> temp = listUtils.distinctByDemand(proDemands);
+        List temp = proDemands.stream().collect(
+                Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(
+                        Comparator.comparing(s -> s.getDemandId()))), ArrayList::new));
+
+        if(temp != null){
+            return Result.succ(temp);
+        }
+
+        return Result.fail("暂无该需求");
     }
 
     @ApiOperation(value="用户需求")
